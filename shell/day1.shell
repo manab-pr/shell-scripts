@@ -1,0 +1,18 @@
+
+#!/bin/bash
+
+source_dir="/mnt/d/tempo"
+
+if [[ ! -d "$source_dir" ]]; then
+   echo "Error: Source directory $source_dir does not exist."
+   exit 1
+fi
+
+mkdir -p "$source_dir/Images" 
+mkdir -p "$source_dir/Documents"
+
+find "$source_dir" -type f -iname "*.jpeg" ! -path "$source_dir/Images/*" -exec mv -t "$source_dir/Images/" {} +
+
+find "$source_dir" -type f -iname "*.txt" ! -path "$source_dir/Documents/*" -exec mv -t "$source_dir/Documents/" {} +
+
+echo "File Moving completed"
