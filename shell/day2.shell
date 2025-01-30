@@ -1,0 +1,20 @@
+#!/bin/bash
+
+#cpu usage
+cpu_usage=$(top -bn1 | grep "Cpu(s)" | awk '{print $8 }')
+
+#memory usage
+memory_usage=$(free -m | awk 'NR==2{printf "%.2f%%",$3*100/$2}')
+
+#disk usage
+disk_usage=$(df -h / | awk 'NR==2{print $5}')
+
+
+#Network statistics
+network_stats=$(ip -s link show eth0 | awk '/RX:|TX:/{getline; print}')
+
+echo "CPU Usage: $cpu_usage"
+echo "Memory Usage: $memory_usage"
+echo "Disk Usage: $disk_usage"
+echo "Network Statics:"
+echo "$network_stats"
