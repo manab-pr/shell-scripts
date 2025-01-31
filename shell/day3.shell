@@ -1,0 +1,29 @@
+#!/bin/bash
+
+
+#function to check web status
+
+
+
+check_website(){
+
+     local url="$1"
+
+     local response=$(curl -s -o /dev/null -w "%{http_code}" "$url")
+
+
+
+     if [ "$response" == "200" ]; then
+
+         echo "Website $url  is up and running!"
+
+     else
+
+        echo "Website $url is down!"
+
+     fi
+ }
+
+  # function call
+
+   check_website "https://google.com/"
