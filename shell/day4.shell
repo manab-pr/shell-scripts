@@ -1,0 +1,74 @@
+#!/bin/bash
+
+#password file path
+
+password_file="/mnt/d/tempo/file.txt"
+
+#store a password
+
+store_password(){
+     echo "$1:$2" >> "$password_file"
+     echo "password stored successfully!"
+}
+
+#retrieve a password
+
+retrieve_password(){
+     password=$(grep "^$1:" "$password_file" | cut -d':' -f2)
+     if [ -n "$password" ]; then
+          echo "Password for $1: $password"
+     else
+         echo "No password found for $1"
+     fi
+}
+
+#list all stored accounts
+list_accounts(){
+    cut -d':' -f1 "$password_file"
+}
+
+# delete
+
+delete_password(){
+     sed -i "/^$1:/d" "$password_file"
+     echo "Password for $1 deleted successfully!"
+}
+
+#user input
+while true; do 
+   echo "Password Manager"
+   echo "1. Store a password"
+   echo "2. Retrieve a password"
+   echo "3. List all accounts"
+   echo "4. Delete a password"
+   echo "5. Exit."
+   read -p "Select an option: " option
+ 
+   case $option in
+      1) 
+         read -p "Enter account name: " account
+         read -sp "Enter Password: " password
+         echo 
+         store_password "$account" "$password"
+         ;;
+       2) 
+         read -p "Enter account name: " account
+         retrieve_password "$account"
+         ;;
+       3) 
+         echo "Stored accounts: "
+         list_accounts
+         ;;
+       4) 
+         read -p "Enter account name: " account
+         delete_password "$account"
+         ;;
+       5)
+         echo "Exiting..."
+         break
+         ;;
+       *)
+         echo "Invalid option! Please select again."
+         ;;
+     esac
+done
