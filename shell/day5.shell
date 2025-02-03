@@ -1,0 +1,49 @@
+#!/usr/bin/bash
+
+#file encryption decryption shell script
+
+# Variable declaration for adding colour to text
+
+NONE='\033[00m'
+RED='\033[01;31m'
+GREEN='\033[01;32m'
+
+export GPG_TTY=$(tty)
+echo -e "${RED}File encrypter/decrypter${NONE}"
+
+echo "Please select what you want to do"
+
+choice="Encrypt Decrypt"
+
+select option in $choice; do
+     if [ $REPLY = 1 ];
+then 
+    echo "You have selected Encryption"
+    echo "Please enter the name of the file(including extension)"
+    read file;
+    gpg -c $file
+    echo -e "${GREEN}File is encrypted${NONE}"
+    break
+
+elif [ $REPLY = 2 ]
+then 
+    echo "You have selected Decryption"
+    echo "Please enter the name of the file (including extension)"
+     read file2
+     if [[ $file2 == *.gpg ]]; then
+            gpg -v -d "$file2"  # verbose mode to see more output
+            echo -e "${GREEN}File is decrypted${NONE}"
+     else
+            echo -e "${RED}Please provide a valid .gpg file for decryption${NONE}"
+     fi
+     break
+    gpg -d $file2
+    echo -e "${GREEN}File is decrypted${NONE}"
+    break
+
+else
+    echo "You have selected invalid option"
+
+fi
+
+done
